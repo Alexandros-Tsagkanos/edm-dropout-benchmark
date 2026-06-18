@@ -1,0 +1,82 @@
+[OULAD] n=32593  encoded train=(24444, 49) test=(8149, 49)
+[OULAD] dropout rate train=0.312 test=0.312  | male-rate train=0.548
+[OULAD] dropout by gender: F=0.305  M=0.317
+--- prep_oulad rc=0 2.3s ---
+[Phase 2] Train: (24444, 49)  Test: (8149, 49)
+[Phase 2] Training Random Forest ...
+[Phase 2] Training XGBoost ...
+[Phase 2] Training MLP ...
+[Phase 2] Baseline results:
+  RandomForest     Acc=0.661  F1=0.368  AUC=0.610
+  XGBoost          Acc=0.634  F1=0.502  AUC=0.665
+  MLP              Acc=0.630  F1=0.469  AUC=0.647
+--- phase2_baselines rc=0 30.2s ---
+[Phase 3] Minority training set: (7617, 49)
+[Phase 3] VAE final loss=88104.4  KL=25756.0
+[Phase 3] Augmented training set: (33654, 49) (added 9210 synthetic dropouts)
+[Phase 3] Training classifiers on VAE-augmented data ...
+  RandomForest     Acc=0.665  F1=0.375  AUC=0.612
+  XGBoost          Acc=0.698  F1=0.316  AUC=0.666
+  MLP              Acc=0.655  F1=0.423  AUC=0.642
+[Phase 3] done
+--- phase3_vae rc=0 128.3s ---
+[Phase 4] Training diffusion on minority: (7617, 49)
+[Phase 4] final eps-MSE = 0.1372
+[Phase 4] Augmented training set: (33654, 49)
+[Phase 4] Training classifiers on diffusion-augmented data ...
+  RandomForest     Acc=0.662  F1=0.365  AUC=0.611
+  XGBoost          Acc=0.700  F1=0.316  AUC=0.665
+  MLP              Acc=0.675  F1=0.357  AUC=0.640
+[Phase 4] utility scores: {'mean_abs_diff_means': 0.014705486595630646, 'mean_abs_diff_stds': 0.2391943633556366} {'mean_abs_diff_means': 0.04087040573358536, 'mean_abs_diff_stds': 0.06479734182357788}
+[Phase 4] done
+--- phase4_diffusion rc=0 106.1s ---
+[Phase 3b] SMOTE augmented training set: (33654, 49) (added 9210 synthetic dropouts)
+[Phase 3b] training classifiers on SMOTE-augmented data ...
+  RandomForest     Acc=0.642  F1=0.403  AUC=0.605
+  XGBoost          Acc=0.647  F1=0.485  AUC=0.662
+  MLP              Acc=0.631  F1=0.466  AUC=0.636
+[Phase 3b] done
+--- phase3b_smote rc=0 39.4s ---
+[Phase 5] running UNCERTAINTY sampling ...
+[Phase 5] running RANDOM sampling baseline ...
+[Phase 5] uncertainty final F1 = 0.438  vs random final F1 = 0.473
+--- phase5_uncertainty_AL rc=0 27.3s ---
+[Phase 6] ep 1  eps=0.42  final F1=0.455
+[Phase 6] ep 2  eps=0.33  final F1=0.467
+[Phase 6] ep 3  eps=0.25  final F1=0.477
+[Phase 6] ep 4  eps=0.17  final F1=0.474
+[Phase 6] ep 5  eps=0.08  final F1=0.470
+[Phase 6] ep 6  eps=0.05  final F1=0.460
+[Phase 6] greedy eval final F1 = 0.429
+[Phase 6] done
+--- phase6_rl_AL rc=0 98.7s ---
+[Phase 7] auditing augmentation: baseline
+  RandomForest  DPD=0.014  EOD=0.013  EqOdds=0.016  F1=0.368
+  XGBoost       DPD=0.007  EOD=0.018  EqOdds=0.018  F1=0.502
+  MLP           DPD=0.019  EOD=0.015  EqOdds=0.031  F1=0.469
+[Phase 7] auditing augmentation: vae_aug
+  RandomForest  DPD=0.006  EOD=0.002  EqOdds=0.008  F1=0.375
+  XGBoost       DPD=0.002  EOD=0.007  EqOdds=0.007  F1=0.316
+  MLP           DPD=0.025  EOD=0.009  EqOdds=0.030  F1=0.423
+[Phase 7] auditing augmentation: diffusion_aug
+  RandomForest  DPD=0.002  EOD=0.002  EqOdds=0.004  F1=0.365
+  XGBoost       DPD=0.000  EOD=0.001  EqOdds=0.001  F1=0.316
+  MLP           DPD=0.012  EOD=0.034  EqOdds=0.034  F1=0.357
+[Phase 7] done
+--- phase7_fairness_posthoc rc=0 90.7s ---
+[Phase 8] training fair-MLP with lambda = 0.0
+  ACC=0.630  F1=0.469  DPD=0.019  EOD=0.015
+[Phase 8] training fair-MLP with lambda = 0.1
+  ACC=0.634  F1=0.473  DPD=0.002  EOD=0.027
+[Phase 8] training fair-MLP with lambda = 0.5
+  ACC=0.633  F1=0.479  DPD=0.020  EOD=0.014
+[Phase 8] training fair-MLP with lambda = 1.0
+  ACC=0.629  F1=0.482  DPD=0.017  EOD=0.013
+[Phase 8] training fair-MLP with lambda = 2.0
+  ACC=0.638  F1=0.477  DPD=0.002  EOD=0.026
+[Phase 8] training fair-MLP with lambda = 5.0
+  ACC=0.665  F1=0.480  DPD=0.005  EOD=0.016
+[Phase 8] training fair-MLP with lambda = 10.0
+  ACC=0.688  F1=0.000  DPD=0.000  EOD=0.000
+[Phase 8] done
+--- phase8_fairness_inprocess rc=0 193.5s ---

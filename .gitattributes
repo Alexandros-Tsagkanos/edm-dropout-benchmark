@@ -1,0 +1,20 @@
+# Normalize text to LF in the repository; check out per-platform.
+* text=auto
+
+# Scripts that MUST stay LF (they break on macOS/Linux otherwise)
+*.sh        text eol=lf
+*.command   text eol=lf
+*.py        text eol=lf
+
+# Windows batch must stay CRLF
+*.bat       text eol=crlf
+
+# Treat data/binary assets as binary (never line-ending munged, not diffed)
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.zip   binary
+*.xlsx  binary
+*.npz   binary
+*.pt    binary
+*.bin   binary

@@ -1,0 +1,41 @@
+name: ci
+
+# Lightweight, deterministic CI: it does not run the neural pipeline (which needs
+# torch/transformers and several minutes). Instead it (1) byte-compiles every module
+# so syntax/import-time errors are caught, and (2) reproduces one committed, no-torch
+# artefact (the familywise-error correction) from the curated multi-seed aggregates,
+# proving the committed RESULTS are self-sufficient for that path.
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compile-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install no-torch core dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy scipy scikit-learn pandas
+
+      - name: Byte-compile all modules
+        run: |
+          python -m compileall -q CODE DATASETS run_all.py
+
+      - name: Reproduce the familywise-error correction (no torch, committed aggregates)
+        run: |
+          python CODE/analysis/multiple_comparisons.py
+          test -f RESULTS/analysis/multiple_comparisons_results.csv
+
+      - name: Show the regenerated table
+        run: cat RESULTS/analysis/multiple_comparisons_results.csv

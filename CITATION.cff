@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this code or its results, please cite the repository (and the technical report it accompanies)."
+title: "edm-dropout-benchmark: Generative, Semi-Supervised and Fair Learning for Student-Dropout Prediction"
+abstract: >-
+  A reproducible, multi-seed, significance-tested benchmark for student-dropout
+  prediction on the UCI Realinho and OULAD datasets. A ten-phase pipeline (three
+  supervised baselines, a hybrid-decoder tabular VAE and a TabDDPM diffusion
+  oversampler, uncertainty- and DQN-based active learning, a self-labelled SSL
+  baseline (Co-Forest), post-hoc and in-processing fairness, and a multimodal
+  DistilBERT extension) plus a methodological-rigor layer (SMOTE baseline,
+  bootstrap CIs, paired Wilcoxon tests with familywise correction, and a real-text
+  validation). The recurring finding is that, on moderate-imbalance tabular data,
+  the more elaborate levers do not beat a well-regularised supervised baseline; the
+  contribution is the integrated, honest, reproducible evaluation. Extends four MDPI
+  anchor papers from the Kotsiantis line (see docs/anchor_papers.md).
+type: software
+authors:
+  - family-names: Tsagkanos
+    given-names: Alexandros
+version: "1.0.0"
+date-released: "2026-06-18"
+license: MIT
+repository-code: "https://github.com/Alexandros-Tsagkanos/edm-dropout-benchmark"
+url: "https://github.com/Alexandros-Tsagkanos/edm-dropout-benchmark"
+keywords:
+  - educational data mining
+  - student dropout prediction
+  - semi-supervised learning
+  - active learning
+  - generative oversampling
+  - diffusion models
+  - algorithmic fairness
+  - reproducibility
+# A DOI for a citable, archived snapshot (e.g. Zenodo) can be added here on release:
+# doi: "10.5281/zenodo.XXXXXXX"

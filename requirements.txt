@@ -1,0 +1,13 @@
+# Python dependencies for the student-dropout pipeline.
+# These exact versions produced the reported numbers (Python 3.13). If a pin is
+# unavailable for your platform/Python, loosen it (change "==" to ">=").
+numpy==2.2.4
+scipy==1.15.3
+scikit-learn==1.7.2
+pandas==2.2.3
+matplotlib==3.10.1
+seaborn==0.13.2
+torch==2.12.0
+xgboost==3.2.0
+transformers==5.8.1
+imbalanced-learn==0.14.1

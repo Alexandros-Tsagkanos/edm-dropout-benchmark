@@ -1,0 +1,13 @@
+label,model,n,pos_rate,threshold,accuracy,f1,auc_roc
+Urgency(1-7),LogReg,29604,0.2168,4.0,0.7792,0.6115,0.8669
+Urgency(1-7),RandomForest,29604,0.2168,4.0,0.8391,0.486,0.8853
+Confusion(1-7),LogReg,29604,0.6739,4.0,0.7434,0.7974,0.8139
+Confusion(1-7),RandomForest,29604,0.6739,4.0,0.7852,0.8531,0.8404
+Sentiment(1-7),LogReg,29604,0.8518,4.0,0.7507,0.8364,0.8372
+Sentiment(1-7),RandomForest,29604,0.8518,4.0,0.8708,0.929,0.8501
+Opinion(1/0),LogReg,29604,0.5563,0.5,0.7853,0.798,0.867
+Opinion(1/0),RandomForest,29604,0.5563,0.5,0.7966,0.8133,0.8803
+Question(1/0),LogReg,29604,0.2013,0.5,0.8102,0.6306,0.8871
+Question(1/0),RandomForest,29604,0.2013,0.5,0.8575,0.4886,0.8968
+Answer(1/0),LogReg,29604,0.2045,0.5,0.7271,0.5318,0.8146
+Answer(1/0),RandomForest,29604,0.2045,0.5,0.8192,0.2965,0.8384

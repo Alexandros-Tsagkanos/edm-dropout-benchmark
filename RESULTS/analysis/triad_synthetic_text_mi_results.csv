@@ -1,0 +1,3 @@
+model,n,dropout_rate,accuracy,f1,auc_roc
+LogReg,4423,0.3213,0.9584,0.9356,0.9936
+RandomForest,4423,0.3213,0.9376,0.8996,0.9877

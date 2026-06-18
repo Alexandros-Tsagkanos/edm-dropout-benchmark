@@ -1,0 +1,45 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Regenerable pipeline artefacts (NOT committed; reproduce with RESULTS/REPRODUCE.md) ---
+# Per-run heavy blobs: processed arrays, model weights, synthetic samples, regenerated comments.
+RESULTS/**/data/
+# Per-seed figure dumps from the multi-seed studies (the canonical figures live in
+# "FINAL REPORT/figures/" and the aggregate figures at each multiseed/ top level).
+RESULTS/*/multiseed/seed_*/figures/
+
+# --- Large third-party data that must NOT be redistributed (see DATA.md + provenance_*.md) ---
+# Download from the cited sources and verify the SHA-256 in the provenance notes.
+DATASETS/forum_urgency/Stanford.csv
+DATASETS/stanford_mooc_posts/stanfordMOOCForumPostsSet/
+DATASETS/tecnologico_monterrey/*.pdf
+DATASETS/tecnologico_monterrey/*.xlsx
+DATASETS/triad_drop/*.pdf
+
+# --- Downloaded model caches (e.g. DistilBERT) ---
+*.bin
+.cache/
+hf_cache/

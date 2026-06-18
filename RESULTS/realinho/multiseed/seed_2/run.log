@@ -1,0 +1,129 @@
+[Phase 1] Loaded 4424 rows x 38 columns
+[Phase 1] Encoded feature matrix: train=(3318, 248), test=(1106, 248)
+[Phase 1] Train dropout rate: 0.321 | Test dropout rate: 0.321
+[Phase 1] EDA & preprocessing complete
+--- phase1_preprocessing rc=0 3.6s ---
+[Phase 2] Train: (3318, 248)  Test: (1106, 248)
+[Phase 2] Training Random Forest ...
+[Phase 2] Training XGBoost ...
+[Phase 2] Training MLP ...
+[Phase 2] Baseline results:
+  RandomForest     Acc=0.877  F1=0.789  AUC=0.920
+  XGBoost          Acc=0.873  F1=0.797  AUC=0.919
+  MLP              Acc=0.860  F1=0.781  AUC=0.908
+--- phase2_baselines rc=0 11.9s ---
+[Phase 3] Minority training set: (1066, 248)
+[Phase 3] VAE final loss=23637.6  KL=8252.2
+[Phase 3] Augmented training set: (4504, 248) (added 1186 synthetic dropouts)
+[Phase 3] Training classifiers on VAE-augmented data ...
+  RandomForest     Acc=0.882  F1=0.804  AUC=0.920
+  XGBoost          Acc=0.883  F1=0.808  AUC=0.925
+  MLP              Acc=0.839  F1=0.763  AUC=0.898
+[Phase 3] done
+--- phase3_vae rc=0 34.8s ---
+[Phase 4] Training diffusion on minority: (1066, 248)
+[Phase 4] final eps-MSE = 0.1672
+[Phase 4] Augmented training set: (4504, 248)
+[Phase 4] Training classifiers on diffusion-augmented data ...
+  RandomForest     Acc=0.879  F1=0.798  AUC=0.917
+  XGBoost          Acc=0.873  F1=0.794  AUC=0.922
+  MLP              Acc=0.854  F1=0.774  AUC=0.900
+[Phase 4] utility scores: {'mean_abs_diff_means': 0.05758248269557953, 'mean_abs_diff_stds': 0.27441903948783875} {'mean_abs_diff_means': 0.2025291919708252, 'mean_abs_diff_stds': 0.11149105429649353}
+[Phase 4] done
+--- phase4_diffusion rc=0 24.4s ---
+[Phase 5] running UNCERTAINTY sampling ...
+[Phase 5] running RANDOM sampling baseline ...
+[Phase 5] uncertainty final F1 = 0.798  vs random final F1 = 0.777
+--- phase5_uncertainty_AL rc=0 27.2s ---
+[Phase 6] ep 1  eps=0.42  final F1=0.758
+[Phase 6] ep 2  eps=0.33  final F1=0.786
+[Phase 6] ep 3  eps=0.25  final F1=0.754
+[Phase 6] ep 4  eps=0.17  final F1=0.786
+[Phase 6] ep 5  eps=0.08  final F1=0.741
+[Phase 6] ep 6  eps=0.05  final F1=0.774
+[Phase 6] greedy eval final F1 = 0.759
+[Phase 6] done
+--- phase6_rl_AL rc=0 90.0s ---
+[Phase 7] auditing augmentation: baseline
+  RandomForest  DPD=0.219  EOD=0.084  EqOdds=0.084  F1=0.789
+  XGBoost       DPD=0.235  EOD=0.048  EqOdds=0.101  F1=0.797
+  MLP           DPD=0.192  EOD=0.048  EqOdds=0.048  F1=0.781
+[Phase 7] auditing augmentation: vae_aug
+  RandomForest  DPD=0.224  EOD=0.077  EqOdds=0.077  F1=0.804
+  XGBoost       DPD=0.227  EOD=0.037  EqOdds=0.090  F1=0.808
+  MLP           DPD=0.235  EOD=0.081  EqOdds=0.096  F1=0.763
+[Phase 7] auditing augmentation: diffusion_aug
+  RandomForest  DPD=0.222  EOD=0.072  EqOdds=0.072  F1=0.798
+  XGBoost       DPD=0.220  EOD=0.055  EqOdds=0.076  F1=0.794
+  MLP           DPD=0.214  EOD=0.065  EqOdds=0.066  F1=0.774
+[Phase 7] done
+--- phase7_fairness_posthoc rc=0 22.7s ---
+[Phase 8] training fair-MLP with lambda = 0.0
+  ACC=0.860  F1=0.781  DPD=0.192  EOD=0.048
+[Phase 8] training fair-MLP with lambda = 0.1
+  ACC=0.856  F1=0.776  DPD=0.185  EOD=0.043
+[Phase 8] training fair-MLP with lambda = 0.5
+  ACC=0.845  F1=0.764  DPD=0.139  EOD=0.003
+[Phase 8] training fair-MLP with lambda = 1.0
+  ACC=0.839  F1=0.746  DPD=0.102  EOD=0.046
+[Phase 8] training fair-MLP with lambda = 2.0
+  ACC=0.831  F1=0.744  DPD=0.063  EOD=0.087
+[Phase 8] training fair-MLP with lambda = 5.0
+  ACC=0.842  F1=0.753  DPD=0.054  EOD=0.159
+[Phase 8] training fair-MLP with lambda = 10.0
+  ACC=0.844  F1=0.757  DPD=0.087  EOD=0.120
+[Phase 8] done
+--- phase8_fairness_inprocess rc=0 35.8s ---
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[Phase 9] generating synthetic comments ...
+[Phase 9] encoding train comments with DistilBERT ...
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 9650.29it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_transform.weight  | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+  encoded 32/3318
+  encoded 672/3318
+  encoded 1312/3318
+  encoded 1952/3318
+  encoded 2592/3318
+  encoded 3232/3318
+[Phase 9] encoding test comments with DistilBERT ...
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 8546.03it/s]
+[transformers] [1mDistilBertModel LOAD REPORT[0m from: distilbert-base-uncased
+Key                     | Status     |  | 
+------------------------+------------+--+-
+vocab_layer_norm.bias   | UNEXPECTED |  | 
+vocab_projector.bias    | UNEXPECTED |  | 
+vocab_layer_norm.weight | UNEXPECTED |  | 
+vocab_transform.bias    | UNEXPECTED |  | 
+vocab_transform.weight  | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+  encoded 32/1106
+  encoded 672/1106
+[Phase 9] multimodal shapes: tr=(3318, 280)  te=(1106, 280)
+[Phase 9] training classifiers on multimodal features ...
+  RandomForest     Acc=0.904  F1=0.844  AUC=0.957
+  XGBoost          Acc=0.901  F1=0.847  AUC=0.961
+  MLP              Acc=0.895  F1=0.839  AUC=0.958
+[Phase 9] done
+--- phase9_multimodal_bert rc=0 34.1s ---
+[Phase 10] master_comparison.csv shape=(31, 17)
+[Phase 10] experiment_summary.md written
+--- phase10_master_comparison rc=0 2.8s ---
+[Phase 3b] SMOTE augmented training set: (4504, 248) (added 1186 synthetic dropouts)
+[Phase 3b] training classifiers on SMOTE-augmented data ...
+  RandomForest     Acc=0.873  F1=0.799  AUC=0.921
+  XGBoost          Acc=0.881  F1=0.806  AUC=0.922
+  MLP              Acc=0.861  F1=0.781  AUC=0.902
+[Phase 3b] done
+--- phase3b_smote rc=0 14.2s ---
